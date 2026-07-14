@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/zhangerbo/ArduinoCoder-releases/main/icon.png" width="32" height="32"> ArduinoCoder
+# <img src="https://raw.githubusercontent.com/zhangerbo/ArduinoCoder-releases/master/icon.png" width="32" height="32"> ArduinoCoder
 
 新一代 Arduino 集成开发环境，为嵌入式开发打造的专业 IDE。
 
