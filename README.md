@@ -2,17 +2,15 @@
 
 新一代 Arduino 集成开发环境，为嵌入式开发打造的专业 IDE。
 
-![Screenshot](https://via.placeholder.com/800x500/0d1117/00979D?text=ArduinoCoder+Screenshot)
-
 ---
 
 ## 下载
 
-**最新版本：v0.1.0**
+**[>>> 点此前往最新版下载页面 <<<](https://github.com/zhangerbo/ArduinoCoder-releases/releases/latest)**
 
-| 平台 | 下载 | 大小 |
+| 平台 | 版本 | 大小 |
 |------|------|------|
-| Windows 10/11 (x64) | [ArduinoCoder Setup 0.1.0.exe](https://github.com/zhangerbo/ArduinoCoder-releases/releases/latest/download/ArduinoCoder%20Setup%200.1.0.exe) | ~109 MB |
+| Windows 10/11 (x64) | v0.1.0 | ~109 MB |
 
 > macOS 和 Linux 版本即将推出。
 
