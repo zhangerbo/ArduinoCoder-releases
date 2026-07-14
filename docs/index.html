@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArduinoCoder — AI 驱动的智能 Arduino 开发工具</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    :root {
+      --bg: #f8fafc;
+      --bg2: #ffffff;
+      --bg3: #f1f5f9;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --teal: #0d9488;
+      --teal2: #0f766e;
+      --teal-glow: rgba(13,148,136,0.08);
+      --purple: #6d28d9;
+      --purple2: #7c3aed;
+      --purple-glow: rgba(109,40,217,0.06);
+      --grad: linear-gradient(135deg, #6d28d9, #0d9488);
+      --orange: #d97706;
+      --green: #059669;
+      --green-bg: #ecfdf5;
+      --red: #dc2626;
+      --radius: 14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,0.82); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px; height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -0.3px; color: var(--text); }
+    .nav-logo .icon { width: 30px; height: 30px; background: var(--grad); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; color: #fff; }
+    .nav-links { display: flex; gap: 32px; font-size: 14px; font-weight: 500; }
+    .nav-links a { color: var(--text2); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .btn { padding: 9px 22px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-primary { background: var(--text); color: #fff; border: none; }
+    .btn-primary:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+    .btn-hero { background: var(--grad); color: #fff; border: none; padding: 15px 36px; font-size: 16px; border-radius: 12px; font-weight: 700; box-shadow: 0 4px 24px rgba(109,40,217,0.18); }
+    .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(109,40,217,0.28); }
+    .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-glow); }
+
+    section { padding: 100px 32px; max-width: 1200px; margin: 0 auto; }
+
+    /* Hero */
+    .hero { padding-top: 150px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before {
+      content: ''; position: absolute; top: -300px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 900px;
+      background: radial-gradient(circle, rgba(109,40,217,0.06) 0%, rgba(13,148,136,0.04) 40%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--green-bg); border: 1px solid #a7f3d0; border-radius: 100px; padding: 6px 20px; font-size: 13px; color: var(--green); font-weight: 600; margin-bottom: 28px; position: relative; }
+    .hero-badge .dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .hero h1 { font-size: 56px; font-weight: 900; line-height: 1.15; letter-spacing: -2px; margin-bottom: 20px; position: relative; color: var(--text); }
+    .hero h1 .grad { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: 18px; color: var(--text2); max-width: 680px; margin: 0 auto 36px; line-height: 1.7; position: relative; }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .hero-stats { display: flex; gap: 56px; justify-content: center; margin-top: 52px; position: relative; }
+    .hero-stat { text-align: center; }
+    .hero-stat .num { font-size: 34px; font-weight: 800; color: var(--text); }
+    .hero-stat .label { font-size: 13px; color: var(--text3); margin-top: 4px; font-weight: 500; }
+
+    /* Section */
+    .section-label { font-size: 13px; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+    .section-title { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; color: var(--text); }
+    .section-desc { font-size: 17px; color: var(--text2); max-width: 620px; line-height: 1.7; }
+
+    /* AI Features */
+    .ai-highlight { background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; padding: 48px; margin-top: 52px; position: relative; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .ai-highlight::before { content: ''; position: absolute; top: -120px; right: -80px; width: 300px; height: 300px; background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%); pointer-events: none; }
+    .ai-highlight h3 { font-size: 24px; font-weight: 700; margin-bottom: 12px; position: relative; color: var(--text); }
+    .ai-highlight p { font-size: 15px; color: var(--text2); line-height: 1.7; position: relative; max-width: 620px; }
+    .ai-highlight .badge { display: inline-block; background: var(--grad); color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; margin-bottom: 16px; letter-spacing: 1px; }
+    .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; position: relative; }
+    .ai-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px 20px; transition: all 0.2s; }
+    .ai-card:hover { border-color: var(--purple2); box-shadow: 0 4px 16px rgba(109,40,217,0.06); }
+    .ai-card .provider { font-size: 16px; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+    .ai-card .models { font-size: 13px; color: var(--text3); }
+    .ai-card .feature { font-size: 13px; color: var(--purple); font-weight: 600; margin-top: 10px; }
+
+    /* Comparison Table */
+    .table-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 40px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .compare-table th, .compare-table td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--border); }
+    .compare-table thead th { background: var(--bg); color: var(--text2); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .compare-table thead th:first-child { border-radius: 16px 0 0 0; }
+    .compare-table thead th:last-child { border-radius: 0 16px 0 0; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+    .compare-table .us { background: rgba(13,148,136,0.04); }
+    .compare-table .us td { font-weight: 600; color: var(--teal); }
+    .check { color: var(--green); font-weight: 700; }
+    .cross { color: var(--text3); }
+    .semi { color: var(--orange); }
+
+    /* Features Grid */
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 52px; }
+    .feature-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; transition: all 0.25s; box-shadow: 0 1px 3px rgba(0,0,0,0.03); }
+    .feature-card:hover { border-color: #cbd5e1; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.06); }
+    .feature-icon { width: 46px; height: 46px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 22px; }
+    .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .feature-card p { font-size: 14px; color: var(--text2); line-height: 1.7; }
+
+    /* Download */
+    .download { text-align: center; }
+    .download-card { display: inline-flex; flex-direction: column; align-items: center; gap: 12px; background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 44px 72px; margin-top: 40px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .download-card .ver { font-size: 14px; color: var(--text3); }
+    .download-card .size { font-size: 13px; color: var(--text3); margin-top: -8px; }
+    .os-tabs { display: flex; gap: 4px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 4px; margin-bottom: 8px; }
+    .os-tabs .os-tab { padding: 7px 20px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text2); transition: all 0.2s; }
+    .os-tabs .os-tab.active { background: #fff; color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 36px; text-align: center; font-size: 13px; color: var(--text3); background: var(--bg2); }
+    footer a { color: var(--text2); text-decoration: none; }
+    footer a:hover { color: var(--teal); }
+
+    @media (max-width: 900px) {
+      .hero h1 { font-size: 34px; letter-spacing: -1px; }
+      .features-grid, .ai-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: column; gap: 24px; }
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      section { padding: 64px 16px; }
+      .compare-table { font-size: 11px; }
+      .compare-table th, .compare-table td { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><div class="icon">◇</div> ArduinoCoder</div>
+  <div class="nav-links">
+    <a href="#ai">AI 编程</a>
+    <a href="#compare">对比</a>
+    <a href="#features">功能</a>
+    <a href="#download">下载</a>
+  </div>
+  <a href="#download" class="btn btn-primary">立即下载</a>
+</nav>
+
+<!-- ─── Hero ─── -->
+<section class="hero">
+  <div class="hero-badge"><div class="dot"></div> v0.1.0 · Windows 版已发布</div>
+  <h1>用<span class="grad"> 自然语言 </span>写 Arduino<br>一句描述，代码就来了</h1>
+  <p>国内首款深度集成 AI 编程助手的 Arduino IDE —— 支持 DeepSeek / MiniMax / Qwen 三大国产模型。只需说"让 LED 每秒闪一次"，代码自动生成、编译、上传一气呵成。</p>
+  <div class="hero-actions">
+    <a href="#download" class="btn btn-hero">&#8595; 免费下载</a>
+    <a href="#compare" class="btn btn-outline" style="padding:15px 30px;font-size:15px;">对比官方 IDE &#8594;</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">3</div><div class="label">国产 AI 模型原生集成</div></div>
+    <div class="hero-stat"><div class="num">109 MB</div><div class="label">安装包 (vs 官方 200MB+)</div></div>
+    <div class="hero-stat"><div class="num">中文</div><div class="label">原生中文界面</div></div>
+  </div>
+</section>
+
+<!-- ─── AI Section ─── -->
+<section id="ai">
+  <div class="section-label">AI 编程助手</div>
+  <div class="section-title">聊天框就是你的编程助手</div>
+  <div class="section-desc">不只是问答 —— AI 可以直接读写你的项目文件、编译代码、上传到开发板。在聊天里完成完整开发流程。</div>
+
+  <div class="ai-highlight">
+    <div class="badge">核心亮点</div>
+    <h3>国产模型 · 原生集成 · 开箱即用</h3>
+    <p>告别在 IDE 和 AI 网页之间来回粘贴代码。输入你的 API Key，AI 就住在编辑器右侧 —— 写代码、改 Bug、解释原理、推荐库文件，所有操作都在一个窗口完成。</p>
+    <div class="ai-grid">
+      <div class="ai-card">
+        <div class="provider">DeepSeek</div>
+        <div class="models">v4-pro · v4-flash</div>
+        <div class="feature">+ 深度思考模式</div>
+      </div>
+      <div class="ai-card">
+        <div class="provider">MiniMax</div>
+        <div class="models">M3 · M2.7 · M2.5</div>
+        <div class="feature">+ 自适应推理</div>
+      </div>
+      <div class="ai-card">
+        <div class="provider">Qwen</div>
+        <div class="models">plus · max · coder</div>
+        <div class="feature">+ 代码专项优化</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Comparison ─── -->
+<section id="compare">
+  <div class="section-label">为什么选择 ArduinoCoder</div>
+  <div class="section-title">全面超越官方 IDE</div>
+  <div class="section-desc">同样的 Arduino CLI 底层，更好的编辑体验，更智能的辅助功能。</div>
+
+  <div class="table-wrap">
+  <table class="compare-table">
+    <thead>
+      <tr><th>对比维度</th><th>Arduino IDE 2.0</th><th>VS Code + PlatformIO</th><th class="us">ArduinoCoder</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>代码编辑器</td><td>简易编辑器</td><td><span class="check">✓</span> VS Code 编辑器</td><td class="us"><span class="check">✓</span> Monaco（VS Code 同款内核）</td></tr>
+      <tr><td>AI 编程助手</td><td><span class="cross">✗</span> 无</td><td><span class="semi">△</span> 需自行安装插件</td><td class="us"><span class="check">✓</span> 原生集成 + 三模型 + 工具调用</td></tr>
+      <tr><td>错误诊断 & 修复</td><td>基础错误提示</td><td>IntelliSense 提示</td><td class="us"><span class="check">✓</span> AI 一键诊断 + 自动修复</td></tr>
+      <tr><td>语言支持</td><td>仅英文</td><td>需装中文插件</td><td class="us"><span class="check">✓</span> 原生中英双语，一键切换</td></tr>
+      <tr><td>安装包大小</td><td>~200MB</td><td>~350MB (含 VS Code)</td><td class="us"><span class="check">✓</span> ~109MB</td></tr>
+      <tr><td>启动速度</td><td>慢（基于 Java）</td><td>中</td><td class="us"><span class="check">✓</span> 快（基于 Electron）</td></tr>
+      <tr><td>深色模式</td><td><span class="cross">✗</span> 无</td><td><span class="check">✓</span></td><td class="us"><span class="check">✓</span> 深色/浅色双主题</td></tr>
+      <tr><td>串口绘图仪</td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td class="us"><span class="check">✓</span></td></tr>
+      <tr><td>首次安装引导</td><td>需手动安装平台</td><td>需手动安装平台</td><td class="us"><span class="check">✓</span> 自动检测并安装 AVR</td></tr>
+      <tr><td>国内网络优化</td><td>依赖国外 CDN</td><td>部分可配置</td><td class="us"><span class="check">✓</span> 支持代理 + 系统环境变量</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ─── Features ─── -->
+<section id="features">
+  <div class="section-label">更多功能</div>
+  <div class="section-title">专业体验，面面俱到</div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">&#9670;</div>
+      <h3>VS Code 同款编辑器</h3>
+      <p>Monaco Editor 内核。语法高亮、智能补全、代码折叠、括号配对着色、Ctrl + 滚轮缩放。官方 IDE 简陋编辑器的全面升级。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>一键编译 & 上传</h3>
+      <p>基于官方 Arduino CLI，支持流式编译反馈 + 实时进度条。编译错误精确到行列，点击即可跳转。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#9635;</div>
+      <h3>串口监视器 & 绘图仪</h3>
+      <p>300 ~ 921600 波特率全支持，实时数据收发。内置绘图仪，传感器波形可视化。官方 2.0 才有绘图仪，我们 0.1 就有。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#9783;</div>
+      <h3>板卡 & 库管理</h3>
+      <p>Uno / Mega / Nano / MKR / Portenta / ESP32 / STM32 / RP2040 全系列支持。在线搜索安装库，一键完成。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#9784;</div>
+      <h3>灵活的面板布局</h3>
+      <p>侧边栏 / AI 面板 / 底部输出面板 — 三处均可拖拽调节宽度和高度。不像官方 IDE 那样只能固定布局。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#9881;</div>
+      <h3>首次使用零门槛</h3>
+      <p>安装后自动检测缺少的平台，弹窗引导一键安装 AVR 包。官方 IDE 需要自己去 Boards Manager 里找。新手友好。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Download ─── -->
+<section id="download" class="download">
+  <div class="section-label">免费下载</div>
+  <div class="section-title">109MB，装完就用</div>
+  <div class="section-desc" style="margin:0 auto">Windows 10/11 x64。无需额外安装 VS Code 或 Java 运行时。</div>
+
+  <div class="download-card">
+    <div class="os-tabs">
+      <div class="os-tab active">&#9632; Windows</div>
+      <div class="os-tab" style="opacity:0.35">macOS (即将推出)</div>
+      <div class="os-tab" style="opacity:0.35">Linux (即将推出)</div>
+    </div>
+    <div style="font-size:22px;font-weight:700;">ArduinoCoder Setup 0.1.0</div>
+    <div class="ver">适用于 Windows 10 / 11 (x64)</div>
+    <a class="btn btn-hero" style="margin-top:8px;" href="https://github.com/zhangerbo/ArduinoCoder-releases/releases/latest" target="_blank">&#8595; 前往下载</a>
+    <div class="size">109 MB · NSIS 安装程序 · 支持自定义路径</div>
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:8px"><strong>ArduinoCoder</strong> — 开源项目，基于 MIT 协议发布</p>
+  <p>Arduino 商标归 Arduino AG 所有。ArduinoCoder 为独立社区项目，与 Arduino 官方无关联。</p>
+</footer>
+
+</body>
+</html>
