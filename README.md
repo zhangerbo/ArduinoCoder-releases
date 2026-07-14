@@ -45,22 +45,6 @@
 ### 中英文双语界面
 完整支持中文和英文界面，一键切换。专为国内开发者优化。
 
----
-
-## 技术栈
-
-| 层 | 技术 |
-|------|------|
-| 桌面框架 | Electron 33 |
-| 前端 UI | React 18 + TypeScript |
-| 代码编辑器 | Monaco Editor 0.52 |
-| 状态管理 | Zustand |
-| 编译后端 | Arduino CLI + gRPC |
-| 语言服务 | clangd LSP |
-| 串口通信 | serialport |
-| 打包 | electron-builder (NSIS) |
-
----
 
 ## 安装要求
 
