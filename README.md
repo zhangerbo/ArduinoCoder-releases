@@ -60,8 +60,8 @@
 
 ---
 
-## 开源协议
+## 许可
 
-本项目采用 [MIT License](LICENSE)。
+免费软件，个人及商业用途均可免费使用。
 
 Arduino 商标归 Arduino AG 所有。ArduinoCoder 为独立社区项目。
